@@ -203,3 +203,5 @@ quitarUnitarias (x:xs) [] = [x]++xs
 
 rcu [] = []
 rcu (x:xs) = obtieneUnitarias ([x]++xs)
+
+-- ya merengues
