@@ -171,41 +171,62 @@ p = P 0
 q = P 1
 r = P 2
 s = P 3
-conjuntoClausulas = [[Neg(p), q],[Neg(p), r],[Neg(p), s],[s],[Neg(s), p],[Neg(r)]]
+conCla = [[Neg(p), q],[Neg(p), r],[Neg(p), s],[s],[Neg(s), p],[Neg(r)]]
 --ejmClausula =[Neg(p), s]
 ejmClausula =[r, q]
 
 -- Regla de clausula unitaria.
---rcu :: [[Prop,Prop]] -> Bool
---rcu ([[Prop,Prop]]) = True
---tamano [] = []
---tamano (x:xs) = if (length x)>=2 then [x]++tamano xs else tamano xs
+obUni [] = []
+obUni (x:xs) = if (length x)==1
+    then x
+    else obUni xs
 
-obtieneUnitarias [] = []
-obtieneUnitarias (x:xs) = if (length x)==1
-    then x++obtieneUnitarias xs
-    else obtieneUnitarias xs
+remClaUni [] _ = []
+remClaUni (x:xs) y = if ( x == y )
+    then remClaUni xs y
+    else [x]++remClaUni xs y
 
-quitaLiteral [] _= []
-quitaLiteral (x:xs) y = if x == y
-    then quitaLiteral xs y
-    else [x]++quitaLiteral xs y
+remClaWhitUni [] _ = []
+remClaWhitUni (x:xs) [] = [x]++xs
+remClaWhitUni (x:xs) y = if ( length x ) == 2
+--    then [x]++remClaWhitUni xs y
+    then [remLitFromCla x y]++remClaWhitUni xs y
+    else [x]++remClaWhitUni xs y
 
-quitaUnitarias [] = []
-quitaUnitarias (x:xs) = if (length x)==2
-    then [x]++quitaUnitarias xs
-    else quitaUnitarias xs
+--then remClaWhitUni xs y
+--else [x]++remClaWhitUni xs y
+clax = [Neg(p), q]
+clay = [p]
+remLitFromCla [] _ = []
+remLitFromCla (x:xs) y = if ( [x] == [Neg(head y)] )
+    then remLitFromCla xs y
+    else [x]++remLitFromCla xs y
 
-quitarUnitariaDelConjuntoClausula [] _= []
-quitarUnitariaDelConjuntoClausula (x:xs) y = [(quitaLiteral x y)]++quitarUnitariaDelConjuntoClausula xs y
 
-quitarUnitariasDelConjuntoClausula [] = []
-quitarUnitariasDelConjuntoClausula (x:xs) = if (length x)==2
-    then [x]++quitarUnitariasDelConjuntoClausula xs
-    else quitarUnitariasDelConjuntoClausula xs
+test [] _ = []
+test (x:xs) y = x
+--
+--quitaLiteral [] _= []
+--quitaLiteral (x:xs) y = if x == y
+--    then quitaLiteral xs y
+--    else [x]++quitaLiteral xs y
+--
+--quitaUnitarias [] = []
+--quitaUnitarias (x:xs) = if (length x)==2
+--    then [x]++quitaUnitarias xs
+--    else quitaUnitarias xs
+--
+--quitarUnitariaDelConjuntoClausula [] _= []
+--quitarUnitariaDelConjuntoClausula (x:xs) y = if (length x)== 2
+--then [(quitaLiteral x y)]++quitarUnitariaDelConjuntoClausula xs y
+--else quitarUnitariaDelConjuntoClausula xs y
+--
+--quitarUnitariasDeClausulas [] [] = []
+--quitarUnitariasDeClausulas [] (y:ys) = []
+--quitarUnitariasDeClausulas (x:xs) [] = [x]++xs
+--quitarUnitariasDeClausulas (x:xs) (y:ys) = quitarUnitariasDeClausulas (quitarUnitariaDelConjuntoClausula ([x]++xs) (Neg(y))) ys
 
-quitarUnitariasDeClausulas [] [] = []
-quitarUnitariasDeClausulas [] (y:ys) = []
-quitarUnitariasDeClausulas (x:xs) [] = [x]++xs
-quitarUnitariasDeClausulas (x:xs) (y:ys) = quitarUnitariasDeClausulas (quitarUnitariaDelConjuntoClausula ([x]++xs) (Neg(y))) ys
-
+--quitarUnitariasDelConjuntoClausula [] = []
+--quitarUnitariasDelConjuntoClausula (x:xs) = if (length x)==2
+--    then [x]++quitarUnitariasDelConjuntoClausula xs
+--    else quitarUnitariasDelConjuntoClausula xs
