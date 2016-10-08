@@ -182,26 +182,30 @@ ejmClausula =[r, q]
 --tamano (x:xs) = if (length x)>=2 then [x]++tamano xs else tamano xs
 
 obtieneUnitarias [] = []
-obtieneUnitarias (x:xs) = if (length x)==1 then x++obtieneUnitarias xs else obtieneUnitarias xs
+obtieneUnitarias (x:xs) = if (length x)==1
+    then x++obtieneUnitarias xs
+    else obtieneUnitarias xs
 
 quitaLiteral [] _= []
-quitaLiteral (x:xs) y = if x == y then quitaLiteral xs y else [x]++quitaLiteral xs y
+quitaLiteral (x:xs) y = if x == y
+    then quitaLiteral xs y
+    else [x]++quitaLiteral xs y
+
+quitaUnitarias [] = []
+quitaUnitarias (x:xs) = if (length x)==2
+    then [x]++quitaUnitarias xs
+    else quitaUnitarias xs
 
 quitarUnitariaDelConjuntoClausula [] _= []
 quitarUnitariaDelConjuntoClausula (x:xs) y = [(quitaLiteral x y)]++quitarUnitariaDelConjuntoClausula xs y
 
 quitarUnitariasDelConjuntoClausula [] = []
 quitarUnitariasDelConjuntoClausula (x:xs) = if (length x)==2
-then [x]++quitarUnitariasDelConjuntoClausula xs
-else quitarUnitariasDelConjuntoClausula xs
+    then [x]++quitarUnitariasDelConjuntoClausula xs
+    else quitarUnitariasDelConjuntoClausula xs
 
-quitarUnitarias [] [] = []
-quitarUnitarias (x:xs) (y:ys) = quitarUnitarias (quitarUnitariaDelConjuntoClausula ([x]++xs) y) ys
-quitarUnitarias [] (y:ys) = []
-quitarUnitarias (x:xs) [] = [x]++xs
+quitarUnitariasDeClausulas [] [] = []
+quitarUnitariasDeClausulas [] (y:ys) = []
+quitarUnitariasDeClausulas (x:xs) [] = [x]++xs
+quitarUnitariasDeClausulas (x:xs) (y:ys) = quitarUnitariasDeClausulas (quitarUnitariaDelConjuntoClausula ([x]++xs) (Neg(y))) ys
 
-
-rcu [] = []
-rcu (x:xs) = obtieneUnitarias ([x]++xs)
-
--- ya merengues
