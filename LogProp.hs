@@ -202,31 +202,3 @@ remLitFromCla (x:xs) y = if ( [x] == [Neg(head y)] )
     then remLitFromCla xs y
     else [x]++remLitFromCla xs y
 
-
-test [] _ = []
-test (x:xs) y = x
---
---quitaLiteral [] _= []
---quitaLiteral (x:xs) y = if x == y
---    then quitaLiteral xs y
---    else [x]++quitaLiteral xs y
---
---quitaUnitarias [] = []
---quitaUnitarias (x:xs) = if (length x)==2
---    then [x]++quitaUnitarias xs
---    else quitaUnitarias xs
---
---quitarUnitariaDelConjuntoClausula [] _= []
---quitarUnitariaDelConjuntoClausula (x:xs) y = if (length x)== 2
---then [(quitaLiteral x y)]++quitarUnitariaDelConjuntoClausula xs y
---else quitarUnitariaDelConjuntoClausula xs y
---
---quitarUnitariasDeClausulas [] [] = []
---quitarUnitariasDeClausulas [] (y:ys) = []
---quitarUnitariasDeClausulas (x:xs) [] = [x]++xs
---quitarUnitariasDeClausulas (x:xs) (y:ys) = quitarUnitariasDeClausulas (quitarUnitariaDelConjuntoClausula ([x]++xs) (Neg(y))) ys
-
---quitarUnitariasDelConjuntoClausula [] = []
---quitarUnitariasDelConjuntoClausula (x:xs) = if (length x)==2
---    then [x]++quitarUnitariasDelConjuntoClausula xs
---    else quitarUnitariasDelConjuntoClausula xs
